@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Operating Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div id="app" class="app hidden">
+    <nav class="rail">
+      <div class="rail-brand">
+        <div class="rail-brand-mark">OL</div>
+        <div class="rail-brand-name">Operating<br/>Log</div>
+      </div>
+      <div class="rail-tabs">
+        <button class="rail-tab active" data-tab="targets">Targets</button>
+        <button class="rail-tab" data-tab="today">Today</button>
+        <button class="rail-tab" data-tab="week">Week</button>
+        <button class="rail-tab" data-tab="month">Month</button>
+        <button class="rail-tab" data-tab="review">Monthly review</button>
+      </div>
+      <div class="rail-status" id="saveIndicator"></div>
+    </nav>
+
+    <main class="content">
+      <!-- TARGETS -->
+      <section class="panel active" id="panel-targets">
+        <header class="panel-header">
+          <h1>Targets</h1>
+          <p class="panel-sub">Define the habits you're tracking. Order, label, and thresholds live here.</p>
+        </header>
+        <div id="habitList" class="habit-list"></div>
+        <button id="addHabitBtn" class="btn btn-ghost">+ Add habit</button>
+      </section>
+
+      <!-- TODAY -->
+      <section class="panel" id="panel-today">
+        <header class="panel-header">
+          <div class="panel-header-row">
+            <div>
+              <h1>Today</h1>
+              <p class="panel-sub mono" id="todayDate"></p>
+            </div>
+            <div class="streak-badge">
+              <span class="streak-num mono" id="streakNum">0</span>
+              <span class="streak-label">day streak</span>
+            </div>
+          </div>
+        </header>
+        <div id="todayList" class="today-list"></div>
+      </section>
+
+      <!-- WEEK -->
+      <section class="panel" id="panel-week">
+        <header class="panel-header">
+          <div class="panel-header-row">
+            <h1>Week</h1>
+            <div class="nav-arrows">
+              <button id="weekPrev" class="btn btn-icon">&larr;</button>
+              <span id="weekRangeLabel" class="mono panel-sub"></span>
+              <button id="weekNext" class="btn btn-icon">&rarr;</button>
+            </div>
+          </div>
+        </header>
+        <div class="week-grid-wrap">
+          <table class="week-grid" id="weekGrid"></table>
+        </div>
+        <div class="sidequest-box">
+          <label class="sidequest-check">
+            <input type="checkbox" id="sidequestDone" />
+            <span>Side quest complete</span>
+          </label>
+          <textarea id="sidequestNote" placeholder="Side quest notes..." rows="2"></textarea>
+        </div>
+      </section>
+
+      <!-- MONTH -->
+      <section class="panel" id="panel-month">
+        <header class="panel-header">
+          <div class="panel-header-row">
+            <h1>Month</h1>
+            <div class="nav-arrows">
+              <button id="monthPrev" class="btn btn-icon">&larr;</button>
+              <span id="monthLabel" class="mono panel-sub"></span>
+              <button id="monthNext" class="btn btn-icon">&rarr;</button>
+            </div>
+          </div>
+        </header>
+        <div class="calendar-heatmap" id="calendarHeatmap"></div>
+        <div class="day-editor hidden" id="dayEditor">
+          <div class="day-editor-header">
+            <span class="mono" id="dayEditorDate"></span>
+            <button class="btn btn-icon" id="dayEditorClose">&times;</button>
+          </div>
+          <div id="dayEditorList" class="today-list"></div>
+        </div>
+      </section>
+
+      <!-- MONTHLY REVIEW -->
+      <section class="panel" id="panel-review">
+        <header class="panel-header">
+          <div class="panel-header-row">
+            <h1>Monthly review</h1>
+            <div class="nav-arrows">
+              <button id="reviewPrev" class="btn btn-icon">&larr;</button>
+              <span id="reviewLabel" class="mono panel-sub"></span>
+              <button id="reviewNext" class="btn btn-icon">&rarr;</button>
+            </div>
+          </div>
+        </header>
+
+        <div class="review-grid">
+          <div class="field-block">
+            <label>Win</label>
+            <textarea id="reviewWin" rows="3"></textarea>
+          </div>
+          <div class="field-block">
+            <label>Miss</label>
+            <textarea id="reviewMiss" rows="3"></textarea>
+          </div>
+        </div>
+
+        <h2 class="section-heading">Category scores</h2>
+        <div id="categoryList" class="category-list"></div>
+
+        <h2 class="section-heading">Check-in</h2>
+        <div class="review-grid">
+          <div class="field-block">
+            <label>Income</label>
+            <input type="number" id="reviewIncome" class="mono" step="0.01" />
+          </div>
+          <div class="field-block">
+            <label>Net worth</label>
+            <input type="number" id="reviewNetworth" class="mono" step="0.01" />
+          </div>
+        </div>
+
+        <div class="field-block">
+          <label>Next month focus</label>
+          <textarea id="reviewNextFocus" rows="3"></textarea>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="apiKeyModal" class="modal-backdrop">
+    <div class="modal">
+      <h2>Operating Log</h2>
+      <p>Enter the API key to unlock this dashboard.</p>
+      <input type="password" id="apiKeyInput" placeholder="API key" />
+      <button id="apiKeySubmit" class="btn btn-primary">Connect</button>
+      <p id="apiKeyError" class="error-text hidden">Invalid key. Try again.</p>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

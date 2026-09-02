@@ -1,0 +1,33 @@
+{
+  "name": "operating-log",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal habit-tracking web app with a REST API for a companion SMS bot.",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "prisma generate && tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy",
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.0",
+    "prisma": "^5.20.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  }
+}

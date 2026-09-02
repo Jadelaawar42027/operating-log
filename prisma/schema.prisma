@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum HabitType {
+  check
+  number
+}
+
+enum Category {
+  People
+  Travel
+  Experiences
+  Health
+  Wealth
+  Work
+}
+
+model Habit {
+  id        String     @id @default(cuid())
+  label     String
+  type      HabitType
+  target    Float?
+  sortOrder Int        @default(0)
+  active    Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  logs      HabitLog[]
+}
+
+model HabitLog {
+  id        String   @id @default(cuid())
+  habitId   String
+  habit     Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  date      DateTime @db.Date
+  completed Boolean?
+  value     Float?
+
+  @@unique([habitId, date])
+}
+
+model Week {
+  weekStart      DateTime @id @db.Date
+  sidequestDone  Boolean  @default(false)
+  sidequestNote  String   @default("")
+}
+
+model MonthReview {
+  month      String   @id
+  win        String   @default("")
+  miss       String   @default("")
+  income     Float?
+  networth   Float?
+  nextFocus  String   @default("")
+  updatedAt  DateTime @updatedAt
+}
+
+model MonthCategoryScore {
+  month  String
+  category Category
+  score  Int      @default(0)
+  notes  String   @default("")
+
+  @@id([month, category])
+}
